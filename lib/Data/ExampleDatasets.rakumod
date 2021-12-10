@@ -1,6 +1,7 @@
 use HTTP::UserAgent;
 use Text::CSV;
 use URL::Find;
+use Data::ExampleDatasets::AccessData;
 
 #===========================================================
 
@@ -43,14 +44,15 @@ sub import-csv-to-dataset(Str $source, *%args) is export {
     } else {
 
         # Get the metadata (hopefully not too slow)
-        my @dfMeta = get-datasets-metadata();
+        # my @dfMeta = get-datasets-metadata();
 
         # Make a search index
-        my %items = @dfMeta.map({ $_<Item> }) Z=> ^@dfMeta.elems;
+        #my %items = @dfMeta.map({ $_<Item> }) Z=> ^@dfMeta.elems;
+        my %items = item-to-csv-url();
 
         # Retrieve if known
         if %items{$source}:exists {
-            return import-csv-to-dataset(@dfMeta[%items{$source}]<CSV>, |%args)
+            return import-csv-to-dataset(%items{$source}, |%args)
         } else {
             die "Unknown source."
         }
