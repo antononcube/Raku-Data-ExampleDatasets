@@ -1,0 +1,30 @@
+{
+  "name": "Data::ExampleDatasets",
+  "description": "Obtaining example datasets.",
+  "version": "0.1.0",
+  "perl": "6.d",
+  "authors": [
+    "Anton Antonov"
+  ],
+  "auth": "github:antononcube",
+  "depends": [
+    "HTTP::UserAgent",
+    "Text::CSV",
+    "URL::Find"
+  ],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "Data::ExampleDatasets": "lib/Data/ExampleDatasets.rakumod"
+  },
+  "resources": [
+    "dfRDatasets.csv"
+  ],
+  "license": "Artistic-2.0",
+  "tags": [
+    "data",
+    "dataset"
+  ],
+  "api": "1",
+  "source-url": "https://github.com/antononcube/Raku-Data-ExampleDatasets.git"
+}
