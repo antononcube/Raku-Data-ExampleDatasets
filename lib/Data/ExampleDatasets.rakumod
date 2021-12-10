@@ -32,14 +32,24 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
 #============================================================
 
 #| Imports CSV files or URLs with CSV data.
-sub import-csv-to-dataset(Str $source, *%args) is export {
+sub example-dataset(Str $source, *%args) is export {
     if find-urls($source) {
 
         # Get the URL content
         my $content = get-url-data($source, timeout => %args<timeout> // 10);
 
+
+        # It would have been nice to 'just' call the Text::CSV function csv,
+        # but since many of the R data sets have row names column with an empty
+        # first field in the header, csv complains/fails.
+        # Also, Text::CSV does not have types and automatic type detection yet.
+        # Hence, I have to have my own parsing function, csv-string-to-dataset.
+        # my %args2 = %args;
+        # %args2<timeout>:delete;
+        # return csv(in=> [|$content], |%args2)
+
         # Ingest it
-        return csv-string-to-dataset($content, sep => %args<sep> // ',', headers => %args<headers> // True)
+        return csv-string-to-dataset($content, |%args)
 
     } else {
 
@@ -52,7 +62,7 @@ sub import-csv-to-dataset(Str $source, *%args) is export {
 
         # Retrieve if known
         if %items{$source}:exists {
-            return import-csv-to-dataset(%items{$source}, |%args)
+            return example-dataset(%items{$source}, |%args)
         } else {
             die "Unknown source."
         }
@@ -80,23 +90,52 @@ sub get-url-data(Str $url, UInt :$timeout= 10) is export {
 #============================================================
 # Parse CSV string to dataset
 #============================================================
+# Take from https://rosettacode.org/wiki/Determine_if_a_string_is_numeric#Raku
+sub is-number-w-ws(Str $term --> Bool) {
+    try { $term.Numeric };
+    $! ?? False !! True
+}
+
+sub is-number-wo-ws(Str $term --> Bool) {
+    ?($term ~~ / \S /) && $term.Numeric !~~ Failure;
+}
 
 #| Parses a specified CSV string into array-of-hashmaps or array-of-arrays.
-sub csv-string-to-dataset(Str $source, Str :$sep = ",", Bool :$headers= True) is export {
+sub csv-string-to-dataset(Str $source, *%args) is export {
 
-    my $csv = Text::CSV.new(:$sep);
+    my %args2 = %args;
+    %args2<headers>:delete;
+    %args2<types>:delete;
+    %args2<auto-types>:delete;
+    my $csv = Text::CSV.new(|%args2);
     my @data = $source.lines;
 
+    # Types is not implemented yet
+    if %args<types>:exists {
+        warn 'Text::CSV does not have an implementation of types setting yet.';
+        # $csv.types(|%args<types>)
+    }
     my @tbl;
 
-    if $headers {
+    if %args<headers> // True {
         my @header = $csv.getline(@data[0]);
         @tbl = do for @data[1 .. *- 1] -> $row {
-            %( @header Z=> $csv.getline($row).list)
+            # This is an MVP solution to automatic types.
+            my @parsedRow = do if %args<auto-types> // True {
+                $csv.getline($row).List.map({ is-number-w-ws($_) ?? $_.Numeric !! $_ }).List
+            } else {
+                $csv.getline($row).List;
+            }
+            %( @header Z=> @parsedRow)
         }
     } else {
         @tbl = do for @data -> $row {
-            $csv.getline($row).list
+            # This is an MVP solution to automatic types.
+            if %args<auto-types> // True {
+                $csv.getline($row).List.map({ (so is-number-w-ws($_)) ?? $_.Numeric !! $_ }).List
+            } else {
+                $csv.getline($row).List;
+            }
         }
     }
 
