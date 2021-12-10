@@ -13,6 +13,15 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
     my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
 
     return @tbl;
+
+    ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
+    ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
+    #my @colNames = ["Package", "Item", "Title", "Rows", "Cols", "n_binary", "n_character", "n_factor", "n_logical", "n_numeric", "CSV", "Doc"];
+    #my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
+    #my Str @metaRecords = $fileHandle.lines;
+    #my @tbl = @metaRecords[1 .. *- 1].map({ %( @colNames Z=> $_.split(',')) });
+    #
+    #return @tbl
 }
 #| Ingests the resource file "dfRDatasets.csv" of Data::ExampleDatasets.
 
