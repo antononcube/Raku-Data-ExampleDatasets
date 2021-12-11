@@ -2,7 +2,7 @@
 
 Raku package for (obtaining) example datasets.
 
-Currently this repository does not contains only [datasets metadata](./resources/dfRdatasets.csv).
+Currently this repository does contains only [datasets metadata](./resources/dfRdatasets.csv).
 The datasets are downloaded from the repository 
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 [VAB1].
@@ -25,9 +25,9 @@ use Data::Summarizers;
 use Data::ExampleDatasets;
 ```
 
-### Get a dataset using identifier
+### Get a dataset by using an identifier
 
-Here we get a dataset by using an identifier and display part of it:
+Here we get a dataset by using an identifier and display part of the obtained dataset:
 
 ```perl6
 my @tbl = example-dataset('Baumann', :headers);
@@ -41,11 +41,12 @@ records-summary(@tbl)
 ```
 
 **Remark**: The known identifiers are from the GitHub repository "Rdatasets", [VAB1].
+See the datasets metadata sub-section below.
 
 
-### Get a dataset using URL
+### Get a dataset by using an URL
 
-Here we get a dataset by using an URL and display a summary of it:
+Here we get a dataset by using an URL and display a summary of the obtained dataset:
 
 ```perl6
 my $url = 'https://raw.githubusercontent.com/antononcube/Raku-Data-Reshapers/main/resources/dfTitanic.csv';
