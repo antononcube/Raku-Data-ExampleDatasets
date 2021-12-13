@@ -9,7 +9,7 @@ use Data::ExampleDatasets::AccessData;
 our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is export {
 
     my $csv = Text::CSV.new;
-    my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
+    my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
 
     my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
 
