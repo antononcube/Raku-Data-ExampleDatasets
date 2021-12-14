@@ -32,12 +32,11 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
 #============================================================
 
 #| Imports CSV files or URLs with CSV data.
-sub example-dataset(Str $source, *%args) is export {
+sub example-dataset(Str $source, Bool :$keep = False, *%args) is export {
     if find-urls($source) {
 
         # Get the URL content
         my $content = get-url-data($source, timeout => %args<timeout> // 10);
-
 
         # It would have been nice to 'just' call the Text::CSV function csv,
         # but since many of the R data sets have row names column with an empty
@@ -62,7 +61,24 @@ sub example-dataset(Str $source, *%args) is export {
 
         # Retrieve if known
         if %items{$source}:exists {
-            return example-dataset(%items{$source}, |%args)
+
+            my $fname = $?FILE.Str;
+            $fname = $fname.subst(/'lib/Data/ExampleDatasets.rakumod' .* /, 'resources/' ~ $source ~ '.csv');
+
+            if $fname.IO.e {
+                my $content = slurp $fname;
+                return csv-string-to-dataset($content, |%args)
+            }
+
+            my $res = example-dataset(%items{$source}, |%args);
+
+            if $keep {
+                # Write to a CSV file in the resources directory
+                csv(in => $res, out => $fname, sep => ',');
+            }
+
+            return $res;
+
         } else {
             die "Unknown source."
         }
