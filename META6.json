@@ -10,7 +10,8 @@
   "depends": [
     "HTTP::UserAgent",
     "Text::CSV",
-    "URL::Find"
+    "URL::Find",
+    "XDG::BaseDirectory"
   ],
   "build-depends": [],
   "test-depends": [],

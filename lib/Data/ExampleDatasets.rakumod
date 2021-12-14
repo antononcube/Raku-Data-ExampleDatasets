@@ -1,6 +1,7 @@
 use HTTP::UserAgent;
 use Text::CSV;
 use URL::Find;
+use XDG::BaseDirectory :terms;
 use Data::ExampleDatasets::AccessData;
 
 #===========================================================
@@ -62,8 +63,15 @@ sub example-dataset(Str $source, Bool :$keep = False, *%args) is export {
         # Retrieve if known
         if %items{$source}:exists {
 
-            my $fname = $?FILE.Str;
-            $fname = $fname.subst(/'lib/Data/ExampleDatasets.rakumod' .* /, 'resources/' ~ $source ~ '.csv');
+            my $dirName = data-home.Str ~ '/Raku-Data-ExampleDatasets';
+            my $fname = $dirName ~ '/' ~ $source ~ '.csv';
+
+            if $keep and not $dirName.IO.e {
+                my $path = IO::Path.new($dirName);
+                if not mkdir($path) {
+                    die "Cannot create the directory: $dirName."
+                }
+            }
 
             if $fname.IO.e {
                 my $content = slurp $fname;
