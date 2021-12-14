@@ -37,16 +37,16 @@ my @tbl = example-dataset('Baumann', :headers);
 say to-pretty-table(@tbl[^6]);
 ```
 ```
-# +---+-----------+-----------+-------------+-------------+-------------+-------+
-# |   | pretest.1 | pretest.2 | post.test.3 | post.test.1 | post.test.2 | group |
-# +---+-----------+-----------+-------------+-------------+-------------+-------+
-# | 1 |     4     |     3     |      41     |      5      |      4      | Basal |
-# | 2 |     6     |     5     |      41     |      9      |      5      | Basal |
-# | 3 |     9     |     4     |      43     |      5      |      3      | Basal |
-# | 4 |     12    |     6     |      46     |      8      |      5      | Basal |
-# | 5 |     16    |     5     |      46     |      10     |      9      | Basal |
-# | 6 |     15    |     13    |      45     |      9      |      8      | Basal |
-# +---+-----------+-----------+-------------+-------------+-------------+-------+
+# +-----------+---+-------+-------------+-------------+-------------+-----------+
+# | pretest.1 |   | group | post.test.2 | post.test.1 | post.test.3 | pretest.2 |
+# +-----------+---+-------+-------------+-------------+-------------+-----------+
+# |     4     | 1 | Basal |      4      |      5      |      41     |     3     |
+# |     6     | 2 | Basal |      5      |      9      |      41     |     5     |
+# |     9     | 3 | Basal |      3      |      5      |      43     |     4     |
+# |     12    | 4 | Basal |      5      |      8      |      46     |     6     |
+# |     16    | 5 | Basal |      9      |      10     |      46     |     5     |
+# |     15    | 6 | Basal |      8      |      9      |      45     |     13    |
+# +-----------+---+-------+-------------+-------------+-------------+-----------+
 ```
 
 Here we summarize the dataset obtained above:
@@ -55,16 +55,16 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 ```
-# +--------------------+-------------+--------------------+--------------------+----------------+--------------------+---------------------+
-# | pretest.2          | group       | post.test.1        | post.test.2        |                | pretest.1          | post.test.3         |
-# +--------------------+-------------+--------------------+--------------------+----------------+--------------------+---------------------+
-# | Min    => 1        | Strat => 22 | Min    => 1        | Min    => 0        | Min    => 1    | Min    => 4        | Min    => 30        |
-# | 1st-Qu => 3        | DRTA  => 22 | 1st-Qu => 5        | 1st-Qu => 5        | 1st-Qu => 17   | 1st-Qu => 8        | 1st-Qu => 40        |
-# | Mean   => 5.106061 | Basal => 22 | Mean   => 8.075758 | Mean   => 6.712121 | Mean   => 33.5 | Mean   => 9.787879 | Mean   => 44.015152 |
-# | Median => 5        |             | Median => 8        | Median => 6        | Median => 33.5 | Median => 9        | Median => 45        |
-# | 3rd-Qu => 6        |             | 3rd-Qu => 11       | 3rd-Qu => 8        | 3rd-Qu => 50   | 3rd-Qu => 12       | 3rd-Qu => 49        |
-# | Max    => 13       |             | Max    => 15       | Max    => 13       | Max    => 66   | Max    => 16       | Max    => 57        |
-# +--------------------+-------------+--------------------+--------------------+----------------+--------------------+---------------------+
+# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
+# | pretest.2          | post.test.3         | post.test.2        | post.test.1        | pretest.1          | group       |                |
+# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
+# | Min    => 1        | Min    => 30        | Min    => 0        | Min    => 1        | Min    => 4        | DRTA  => 22 | Min    => 1    |
+# | 1st-Qu => 3        | 1st-Qu => 40        | 1st-Qu => 5        | 1st-Qu => 5        | 1st-Qu => 8        | Basal => 22 | 1st-Qu => 17   |
+# | Mean   => 5.106061 | Mean   => 44.015152 | Mean   => 6.712121 | Mean   => 8.075758 | Mean   => 9.787879 | Strat => 22 | Mean   => 33.5 |
+# | Median => 5        | Median => 45        | Median => 6        | Median => 8        | Median => 9        |             | Median => 33.5 |
+# | 3rd-Qu => 6        | 3rd-Qu => 49        | 3rd-Qu => 8        | 3rd-Qu => 11       | 3rd-Qu => 12       |             | 3rd-Qu => 50   |
+# | Max    => 13       | Max    => 57        | Max    => 13       | Max    => 15       | Max    => 16       |             | Max    => 66   |
+# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
 ```
 
 **Remark**: The known identifiers are from the GitHub repository "Rdatasets", [VAB1].
@@ -81,16 +81,16 @@ my @tbl2 = example-dataset($url, :headers);
 records-summary(@tbl2);
 ```
 ```
-# +----------------+---------------+-------------------+-----------------+---------------------+
-# | passengerClass | passengerSex  | passengerSurvival | id              | passengerAge        |
-# +----------------+---------------+-------------------+-----------------+---------------------+
-# | 3rd => 709     | male   => 843 | died     => 809   | Min    => 1     | Min    => -1        |
-# | 1st => 323     | female => 466 | survived => 500   | 1st-Qu => 327.5 | 1st-Qu => 10        |
-# | 2nd => 277     |               |                   | Mean   => 655   | Mean   => 23.550038 |
-# |                |               |                   | Median => 655   | Median => 20        |
-# |                |               |                   | 3rd-Qu => 982.5 | 3rd-Qu => 40        |
-# |                |               |                   | Max    => 1309  | Max    => 80        |
-# +----------------+---------------+-------------------+-----------------+---------------------+
+# +-----------------+---------------------+----------------+---------------+-------------------+
+# | id              | passengerAge        | passengerClass | passengerSex  | passengerSurvival |
+# +-----------------+---------------------+----------------+---------------+-------------------+
+# | Min    => 1     | Min    => -1        | 3rd => 709     | male   => 843 | died     => 809   |
+# | 1st-Qu => 327.5 | 1st-Qu => 10        | 1st => 323     | female => 466 | survived => 500   |
+# | Mean   => 655   | Mean   => 23.550038 | 2nd => 277     |               |                   |
+# | Median => 655   | Median => 20        |                |               |                   |
+# | 3rd-Qu => 982.5 | 3rd-Qu => 40        |                |               |                   |
+# | Max    => 1309  | Max    => 80        |                |               |                   |
+# +-----------------+---------------------+----------------+---------------+-------------------+
 ```
 
 ### Datasets metadata
@@ -107,22 +107,53 @@ my @tblMeta = get-datasets-metadata();
 say to-pretty-table(@tblMeta)
 ```
 ```
-# +--------------------------------------------------------------------+------+------------+------+
-# |                               Title                                | Rows |    Item    | Cols |
-# +--------------------------------------------------------------------+------+------------+------+
-# |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |  13  | Snow.pumps |  4   |
-# |                          BCG Vaccine Data                          |  13  |    BCG     |  7   |
-# |                  Heat Evolved by Setting Cements                   |  13  |   cement   |  5   |
-# |   Waterflow Measurements of Kootenay River in Libby and Newgate    |  13  |  kootenay  |  2   |
-# | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |  13  | Newhouse77 |  5   |
-# |                         Families in Saxony                         |  13  |   Saxony   |  2   |
-# +--------------------------------------------------------------------+------+------------+------+
+# +--------------------------------------------------------------------+------+------+------------+
+# |                               Title                                | Cols | Rows |    Item    |
+# +--------------------------------------------------------------------+------+------+------------+
+# |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |  4   |  13  | Snow.pumps |
+# |                          BCG Vaccine Data                          |  7   |  13  |    BCG     |
+# |                  Heat Evolved by Setting Cements                   |  5   |  13  |   cement   |
+# |   Waterflow Measurements of Kootenay River in Libby and Newgate    |  2   |  13  |  kootenay  |
+# | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |  5   |  13  | Newhouse77 |
+# |                         Families in Saxony                         |  2   |  13  |   Saxony   |
+# +--------------------------------------------------------------------+------+------+------------+
 ```
+
+### Keeping downloaded data
+
+By default the data is obtained over the web from
+[Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
+but `example-dataset` has an option to keep the data "locally."
+(The data is saved in `XDG_DATA_HOME`, see 
+[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE).)
+
+This can be demonstrated with the following timings of a dataset with ~1300 rows:
+
+```raku
+my $startTime = now;
+my $data = example-dataset('titanic'):keep;
+my $endTime = now;
+say "Geting the data first time took { $endTime - $startTime } seconds";
+```
+```
+# Geting the data first time took 2.886677205 seconds
+```
+
+```raku
+$startTime = now;
+$data = example-dataset('titanic'):keep;
+$endTime = now;
+say "Geting the data second time took { $endTime - $startTime } seconds";
+```
+```
+# Geting the data second time took 2.024275299 seconds
+```
+
 ------
 
 ## References
 
-### Functions, repositories
+### Functions, packages, repositories
 
 [AAf1] Anton Antonov,
 [`ExampleDataset`](https://resources.wolframcloud.com/FunctionRepository/resources/ExampleDataset),
@@ -133,6 +164,12 @@ say to-pretty-table(@tblMeta)
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 (2020),
 [GitHub/vincentarelbundock](https://github.com/vincentarelbundock).
+
+[JS1] Jonathan Stowe,
+[`XDG::BaseDirectory`](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE),
+(last updated on 2021-03-31),
+[Raku Modules](https://modules.raku.org/).
+
 
 ### Interactive interfaces
 

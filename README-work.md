@@ -67,11 +67,36 @@ my @tblMeta = get-datasets-metadata();
 @tblMeta = @tblMeta.grep({ $_<Rows> == 13}).map({ $_.grep({ $_.key (elem) <Item Title Rows Cols>}).Hash });
 say to-pretty-table(@tblMeta)
 ```
+
+### Keeping downloaded data
+
+By default the data is obtained over the web from
+[Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
+but `example-dataset` has an option to keep the data "locally."
+(The data is saved in `XDG_DATA_HOME`, see 
+[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE).)
+
+This can be demonstrated with the following timings of a dataset with ~1300 rows:
+
+```raku
+my $startTime = now;
+my $data = example-dataset('titanic'):keep;
+my $endTime = now;
+say "Geting the data first time took { $endTime - $startTime } seconds";
+```
+
+```raku
+$startTime = now;
+$data = example-dataset('titanic'):keep;
+$endTime = now;
+say "Geting the data second time took { $endTime - $startTime } seconds";
+```
+
 ------
 
 ## References
 
-### Functions, repositories
+### Functions, packages, repositories
 
 [AAf1] Anton Antonov,
 [`ExampleDataset`](https://resources.wolframcloud.com/FunctionRepository/resources/ExampleDataset),
@@ -82,6 +107,12 @@ say to-pretty-table(@tblMeta)
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 (2020),
 [GitHub/vincentarelbundock](https://github.com/vincentarelbundock).
+
+[JS1] Jonathan Stowe,
+[`XDG::BaseDirectory`](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE),
+(last updated on 2021-03-31),
+[Raku Modules](https://modules.raku.org/).
+
 
 ### Interactive interfaces
 
