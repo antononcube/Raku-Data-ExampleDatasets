@@ -20,7 +20,7 @@
     "Data::ExampleDatasets::AccessData": "lib/Data/ExampleDatasets/AccessData.rakumod"
   },
   "resources": [
-    "dfRDatasets.csv"
+    "dfRdatasets.csv"
   ],
   "license": "Artistic-2.0",
   "tags": [
