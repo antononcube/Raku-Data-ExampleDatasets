@@ -62,10 +62,24 @@ sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
 
         # Retrieve if known
         my %catRes;
-        if $sourceSpec ~~ Str and not so $sourceSpec ~~ ':' {
-            %catRes = %itemToURLs.categorize({ so $_.key ~~ / .* '::' <$sourceSpec> / });
-        } elsif $sourceSpec ~~ Str {
-            %catRes = %itemToURLs.categorize({ so $_.key ~~ / <$sourceSpec> / });
+        if $sourceSpec ~~ Str {
+
+            if not so $sourceSpec.contains(':') {
+
+                %catRes = %itemToURLs.categorize({ so $_.key ~~ / .* '::' $sourceSpec / });
+
+            } elsif so $sourceSpec ~~ / .* '::' .* / {
+
+                my $rx = $sourceSpec.split('::').join('..');
+
+                %catRes = %itemToURLs.categorize({ so $_.key ~~ / <$rx> / });
+
+            } else {
+
+                %catRes = %itemToURLs.categorize({ so $_.key ~~ / <$sourceSpec> / });
+
+            }
+
         } elsif $sourceSpec ~~ Regex {
             %catRes = %itemToURLs.categorize({ so $_.key ~~ $sourceSpec });
         }
@@ -74,7 +88,7 @@ sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
             warn 'No datasets found with the given source spec.';
             return Nil;
         } elsif %catRes{True}.elems > 1 {
-            warn 'Found more than one dataset with the given spec: ', %catRes{True}.gist;
+            warn "Found more than one dataset with the given spec: \n", %catRes{True}.join("\n");
             return Nil;
         }
 
