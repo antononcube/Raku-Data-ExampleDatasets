@@ -2,7 +2,7 @@
 
 Raku package for (obtaining) example datasets.
 
-Currently this repository does contains only [datasets metadata](./resources/dfRdatasets.csv).
+Currently, this repository contains only [datasets metadata](./resources/dfRdatasets.csv).
 The datasets are downloaded from the repository 
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 [VAB1].
@@ -37,16 +37,8 @@ my @tbl = example-dataset('Baumann', :headers);
 say to-pretty-table(@tbl[^6]);
 ```
 ```
-# +-----------+---+-------+-------------+-------------+-------------+-----------+
-# | pretest.1 |   | group | post.test.2 | post.test.1 | post.test.3 | pretest.2 |
-# +-----------+---+-------+-------------+-------------+-------------+-----------+
-# |     4     | 1 | Basal |      4      |      5      |      41     |     3     |
-# |     6     | 2 | Basal |      5      |      9      |      41     |     5     |
-# |     9     | 3 | Basal |      3      |      5      |      43     |     4     |
-# |     12    | 4 | Basal |      5      |      8      |      46     |     6     |
-# |     16    | 5 | Basal |      9      |      10     |      46     |     5     |
-# |     15    | 6 | Basal |      8      |      9      |      45     |     13    |
-# +-----------+---+-------+-------------+-------------+-------------+-----------+
+#ERROR: If the first argument is an array then it is expected that it can be coerced into a array-of-hashes, array-of-positionals, or hash-of-hashes, which in turn can be coerced into a full two dimensional array.
+# Nil
 ```
 
 Here we summarize the dataset obtained above:
@@ -55,21 +47,33 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 ```
-# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
-# | pretest.2          | post.test.3         | post.test.2        | post.test.1        | pretest.1          | group       |                |
-# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
-# | Min    => 1        | Min    => 30        | Min    => 0        | Min    => 1        | Min    => 4        | DRTA  => 22 | Min    => 1    |
-# | 1st-Qu => 3        | 1st-Qu => 40        | 1st-Qu => 5        | 1st-Qu => 5        | 1st-Qu => 8        | Basal => 22 | 1st-Qu => 17   |
-# | Mean   => 5.106061 | Mean   => 44.015152 | Mean   => 6.712121 | Mean   => 8.075758 | Mean   => 9.787879 | Strat => 22 | Mean   => 33.5 |
-# | Median => 5        | Median => 45        | Median => 6        | Median => 8        | Median => 9        |             | Median => 33.5 |
-# | 3rd-Qu => 6        | 3rd-Qu => 49        | 3rd-Qu => 8        | 3rd-Qu => 11       | 3rd-Qu => 12       |             | 3rd-Qu => 50   |
-# | Max    => 13       | Max    => 57        | Max    => 13       | Max    => 15       | Max    => 16       |             | Max    => 66   |
-# +--------------------+---------------------+--------------------+--------------------+--------------------+-------------+----------------+
+#ERROR: No such method 'value' for invocant of type 'Array'.  Did you mean
+#ERROR: 'values'?
+# Nil
 ```
 
-**Remark**: The known identifiers are from the GitHub repository "Rdatasets", [VAB1].
+**Remark**:  The values for the first argument of `example-dataset` correspond to the values 
+of the columns “Item” and “Package”, respectively, in the
+[metadata dataset](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) 
+from the GitHub repository “Rdatasets”, [VAB1]. 
 See the datasets metadata sub-section below.
 
+The first argument of `example-dataset` can take as values:
+
+
+- Strings that correspond to the column "Items" of the metadata dataset
+
+  - E.g. `example-dataset("mtcars")`
+
+- Strings that correspond to the columns "Package" and "Items" of the metadata dataset
+    
+  - E.g. `example-dataset("COUNT::titanic")`
+
+- Regexes
+
+  - E.g. `example-dataset(/ .* mann $ /)`
+
+- `Whatever` or `WhateverCode`
 
 ### Get a dataset by using an URL
 
@@ -81,16 +85,16 @@ my @tbl2 = example-dataset($url, :headers);
 records-summary(@tbl2);
 ```
 ```
-# +-----------------+---------------------+----------------+---------------+-------------------+
-# | id              | passengerAge        | passengerClass | passengerSex  | passengerSurvival |
-# +-----------------+---------------------+----------------+---------------+-------------------+
-# | Min    => 1     | Min    => -1        | 3rd => 709     | male   => 843 | died     => 809   |
-# | 1st-Qu => 327.5 | 1st-Qu => 10        | 1st => 323     | female => 466 | survived => 500   |
-# | Mean   => 655   | Mean   => 23.550038 | 2nd => 277     |               |                   |
-# | Median => 655   | Median => 20        |                |               |                   |
-# | 3rd-Qu => 982.5 | 3rd-Qu => 40        |                |               |                   |
-# | Max    => 1309  | Max    => 80        |                |               |                   |
-# +-----------------+---------------------+----------------+---------------+-------------------+
+# +-----------------+----------------+---------------------+-------------------+---------------+
+# | id              | passengerClass | passengerAge        | passengerSurvival | passengerSex  |
+# +-----------------+----------------+---------------------+-------------------+---------------+
+# | Min    => 1     | 3rd => 709     | Min    => -1        | died     => 809   | male   => 843 |
+# | 1st-Qu => 327.5 | 1st => 323     | 1st-Qu => 10        | survived => 500   | female => 466 |
+# | Mean   => 655   | 2nd => 277     | Mean   => 23.550038 |                   |               |
+# | Median => 655   |                | Median => 20        |                   |               |
+# | 3rd-Qu => 982.5 |                | 3rd-Qu => 40        |                   |               |
+# | Max    => 1309  |                | Max    => 80        |                   |               |
+# +-----------------+----------------+---------------------+-------------------+---------------+
 ```
 
 ### Datasets metadata
@@ -107,16 +111,16 @@ my @tblMeta = get-datasets-metadata();
 say to-pretty-table(@tblMeta)
 ```
 ```
-# +--------------------------------------------------------------------+------+------+------------+
-# |                               Title                                | Cols | Rows |    Item    |
-# +--------------------------------------------------------------------+------+------+------------+
-# |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |  4   |  13  | Snow.pumps |
-# |                          BCG Vaccine Data                          |  7   |  13  |    BCG     |
-# |                  Heat Evolved by Setting Cements                   |  5   |  13  |   cement   |
-# |   Waterflow Measurements of Kootenay River in Libby and Newgate    |  2   |  13  |  kootenay  |
-# | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |  5   |  13  | Newhouse77 |
-# |                         Families in Saxony                         |  2   |  13  |   Saxony   |
-# +--------------------------------------------------------------------+------+------+------------+
+# +------+------------+------+--------------------------------------------------------------------+
+# | Cols |    Item    | Rows |                               Title                                |
+# +------+------------+------+--------------------------------------------------------------------+
+# |  4   | Snow.pumps |  13  |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |
+# |  7   |    BCG     |  13  |                          BCG Vaccine Data                          |
+# |  5   |   cement   |  13  |                  Heat Evolved by Setting Cements                   |
+# |  2   |  kootenay  |  13  |   Waterflow Measurements of Kootenay River in Libby and Newgate    |
+# |  5   | Newhouse77 |  13  | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |
+# |  2   |   Saxony   |  13  |                         Families in Saxony                         |
+# +------+------------+------+--------------------------------------------------------------------+
 ```
 
 ### Keeping downloaded data
@@ -125,28 +129,28 @@ By default the data is obtained over the web from
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 but `example-dataset` has an option to keep the data "locally."
 (The data is saved in `XDG_DATA_HOME`, see 
-[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE).)
+[[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE)].)
 
 This can be demonstrated with the following timings of a dataset with ~1300 rows:
 
 ```raku
 my $startTime = now;
-my $data = example-dataset('titanic'):keep;
+my $data = example-dataset( / 'COUNT::titanic' $ / ):keep;
 my $endTime = now;
 say "Geting the data first time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data first time took 2.886677205 seconds
+# Geting the data first time took 2.90335873 seconds
 ```
 
 ```raku
 $startTime = now;
-$data = example-dataset('titanic'):keep;
+$data = example-dataset( / 'COUNT::titanic' $/ ):keep;
 $endTime = now;
 say "Geting the data second time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data second time took 2.024275299 seconds
+# Geting the data second time took 1.559416817 seconds
 ```
 
 ------

@@ -2,7 +2,7 @@
 
 Raku package for (obtaining) example datasets.
 
-Currently this repository does contains only [datasets metadata](./resources/dfRdatasets.csv).
+Currently, this repository contains only [datasets metadata](./resources/dfRdatasets.csv).
 The datasets are downloaded from the repository 
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 [VAB1].
@@ -40,9 +40,28 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 
-**Remark**: The known identifiers are from the GitHub repository "Rdatasets", [VAB1].
+**Remark**:  The values for the first argument of `example-dataset` correspond to the values 
+of the columns “Item” and “Package”, respectively, in the
+[metadata dataset](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) 
+from the GitHub repository “Rdatasets”, [VAB1]. 
 See the datasets metadata sub-section below.
 
+The first argument of `example-dataset` can take as values:
+
+
+- Strings that correspond to the column "Items" of the metadata dataset
+
+  - E.g. `example-dataset("mtcars")`
+
+- Strings that correspond to the columns "Package" and "Items" of the metadata dataset
+    
+  - E.g. `example-dataset("COUNT::titanic")`
+
+- Regexes
+
+  - E.g. `example-dataset(/ .* mann $ /)`
+
+- `Whatever` or `WhateverCode`
 
 ### Get a dataset by using an URL
 
@@ -74,20 +93,20 @@ By default the data is obtained over the web from
 [Rdatasets](https://github.com/vincentarelbundock/Rdatasets/),
 but `example-dataset` has an option to keep the data "locally."
 (The data is saved in `XDG_DATA_HOME`, see 
-[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE).)
+[[JS1](https://modules.raku.org/dist/XDG::BaseDirectory:cpan:JSTOWE)].)
 
 This can be demonstrated with the following timings of a dataset with ~1300 rows:
 
 ```raku
 my $startTime = now;
-my $data = example-dataset('titanic'):keep;
+my $data = example-dataset( / 'COUNT::titanic' $ / ):keep;
 my $endTime = now;
 say "Geting the data first time took { $endTime - $startTime } seconds";
 ```
 
 ```raku
 $startTime = now;
-$data = example-dataset('titanic'):keep;
+$data = example-dataset( / 'COUNT::titanic' $/ ):keep;
 $endTime = now;
 say "Geting the data second time took { $endTime - $startTime } seconds";
 ```
