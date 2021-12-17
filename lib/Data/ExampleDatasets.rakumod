@@ -71,7 +71,7 @@ sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
         }
 
         if not %catRes{True}:exists {
-            warn 'Not datasets found with the given source spec.';
+            warn 'No datasets found with the given source spec.';
             return Nil;
         } elsif %catRes{True}.elems > 1 {
             warn 'Found more than one dataset with the given spec: ', %catRes{True}.gist;
