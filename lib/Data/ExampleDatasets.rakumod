@@ -33,11 +33,11 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
 #============================================================
 
 #| Imports CSV files or URLs with CSV data.
-sub example-dataset(Str $source, Bool :$keep = False, *%args) is export {
-    if find-urls($source) {
+sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
+    if $sourceSpec ~~ Str and find-urls($sourceSpec) {
 
         # Get the URL content
-        my $content = get-url-data($source, timeout => %args<timeout> // 10);
+        my $content = get-url-data($sourceSpec, timeout => %args<timeout> // 10);
 
         # It would have been nice to 'just' call the Text::CSV function csv,
         # but since many of the R data sets have row names column with an empty
@@ -58,38 +58,54 @@ sub example-dataset(Str $source, Bool :$keep = False, *%args) is export {
 
         # Make a search index
         #my %items = @dfMeta.map({ $_<Item> }) Z=> ^@dfMeta.elems;
-        my %items = item-to-csv-url();
+        my %itemToURLs = item-to-csv-url();
 
         # Retrieve if known
-        if %items{$source}:exists {
-
-            my $dirName = data-home.Str ~ '/Raku-Data-ExampleDatasets';
-            my $fname = $dirName ~ '/' ~ $source ~ '.csv';
-
-            if $keep and not $dirName.IO.e {
-                my $path = IO::Path.new($dirName);
-                if not mkdir($path) {
-                    die "Cannot create the directory: $dirName."
-                }
-            }
-
-            if $fname.IO.e {
-                my $content = slurp $fname;
-                return csv-string-to-dataset($content, |%args)
-            }
-
-            my $res = example-dataset(%items{$source}, |%args);
-
-            if $keep {
-                # Write to a CSV file in the resources directory
-                csv(in => $res, out => $fname, sep => ',');
-            }
-
-            return $res;
-
-        } else {
-            die "Unknown source."
+        my %catRes;
+        if $sourceSpec ~~ Str and not so $sourceSpec ~~ ':' {
+            %catRes = %itemToURLs.categorize({ so $_.key ~~ / .* '::' <$sourceSpec> / });
+        } elsif $sourceSpec ~~ Str {
+            %catRes = %itemToURLs.categorize({ so $_.key ~~ / <$sourceSpec> / });
+        } elsif $sourceSpec ~~ Regex {
+            %catRes = %itemToURLs.categorize({ so $_.key ~~ $sourceSpec });
         }
+
+        if not %catRes{True}:exists {
+            warn 'Not datasets found with the given source spec.';
+            return Nil;
+        } elsif %catRes{True}.elems > 1 {
+            warn 'Found more than one dataset with the given spec: ', %catRes{True}.gist;
+            return Nil;
+        }
+
+        my $csvURL = %catRes{True}.first.value;
+        my $datasetName = $csvURL ~~ / '/' (<.alnum>+) '.csv' /;
+        $datasetName = $datasetName.values.Str;
+
+        my $dirName = data-home.Str ~ '/raku/Data/ExampleDatasets';
+        my $fname = $dirName ~ '/' ~ $datasetName ~ '.csv';
+
+        if $keep and not $dirName.IO.e {
+            my $path = IO::Path.new($dirName);
+            if not mkdir($path) {
+                die "Cannot create the directory: $dirName."
+            }
+        }
+
+        if $fname.IO.e {
+            my $content = slurp $fname;
+            return csv-string-to-dataset($content, |%args)
+        }
+
+        my $res = example-dataset($csvURL, |%args);
+
+        if $keep {
+            # Write to a CSV file in the resources directory
+            csv(in => $res, out => $fname, sep => ',');
+        }
+
+        return $res;
+
     }
 }
 
