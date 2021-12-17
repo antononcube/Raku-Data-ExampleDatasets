@@ -33,7 +33,7 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
 #============================================================
 
 #| Imports CSV files or URLs with CSV data.
-sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
+sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args) is export {
     if $sourceSpec ~~ Str and find-urls($sourceSpec) {
 
         # Get the URL content
@@ -60,9 +60,14 @@ sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
         #my %items = @dfMeta.map({ $_<Item> }) Z=> ^@dfMeta.elems;
         my %itemToURLs = item-to-csv-url();
 
-        # Retrieve if known
+        # Retrieve if known or Whatever
         my %catRes;
-        if $sourceSpec ~~ Str {
+        if $sourceSpec.isa(Whatever) or  $sourceSpec.isa(WhateverCode) {
+
+            my $rx = %itemToURLs.keys.pick ~ ' $';
+            return example-dataset( $rx, :$keep, |%args)
+
+        } elsif $sourceSpec ~~ Str {
 
             if not so $sourceSpec.contains(':') {
 
