@@ -97,7 +97,7 @@ sub example-dataset($sourceSpec, Bool :$keep = False, *%args) is export {
         $datasetName = $datasetName.values.Str;
 
         my $dirName = data-home.Str ~ '/raku/Data/ExampleDatasets';
-        my $fname = $dirName ~ '/' ~ $datasetName ~ '.csv';
+        my $fname = $dirName ~ '/' ~ %catRes{True}[0].key ~ '.csv';
 
         if $keep and not $dirName.IO.e {
             my $path = IO::Path.new($dirName);
