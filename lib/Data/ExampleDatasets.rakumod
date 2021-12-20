@@ -6,26 +6,32 @@ use Data::ExampleDatasets::AccessData;
 
 #===========================================================
 
+my @metadataDataset = Nil;
+
 #| Get the dataset. Returns Positional[Hash] or Positional[Array].
 our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is export {
 
-    my $csv = Text::CSV.new;
-    my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
+    if @metadataDataset !eqv [Any,] {
+        return @metadataDataset
+    } else {
 
-    # Instead of just calling the following line let us delegate to
-    # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
-    my $content = slurp $fileHandle;
-    my @tbl = csv-string-to-dataset($content);
-    return @tbl;
+        my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
 
-    ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
-    ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
-    #my @colNames = ["Package", "Item", "Title", "Rows", "Cols", "n_binary", "n_character", "n_factor", "n_logical", "n_numeric", "CSV", "Doc"];
-    #my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
-    #my Str @metaRecords = $fileHandle.lines;
-    #my @tbl = @metaRecords[1 .. *- 1].map({ %( @colNames Z=> $_.split(',')) });
-    #
-    #return @tbl
+        # Instead of just calling the following line let us delegate to
+        # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
+        my $content = slurp $fileHandle;
+        @metadataDataset = csv-string-to-dataset($content);
+        return @metadataDataset;
+
+        ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
+        ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
+        #my @colNames = ["Package", "Item", "Title", "Rows", "Cols", "n_binary", "n_character", "n_factor", "n_logical", "n_numeric", "CSV", "Doc"];
+        #my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
+        #my Str @metaRecords = $fileHandle.lines;
+        #my @tbl = @metaRecords[1 .. *- 1].map({ %( @colNames Z=> $_.split(',')) });
+        #
+        #return @tbl
+    }
 }
 #| Ingests the resource file "dfRDatasets.csv" of Data::ExampleDatasets.
 
