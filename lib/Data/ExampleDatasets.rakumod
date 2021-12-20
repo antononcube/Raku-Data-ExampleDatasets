@@ -98,10 +98,10 @@ sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args) is expo
         }
 
         if not %catRes{True}:exists {
-            warn 'No datasets found with the given source spec.';
+            note 'No datasets found with the given source spec.';
             return Nil;
         } elsif %catRes{True}.elems > 1 {
-            warn "Found more than one dataset with the given spec: \n", %catRes{True}.join("\n");
+            note "Found more than one dataset with the given spec: \n", %catRes{True}.join("\n");
             return Nil;
         }
 
@@ -179,7 +179,7 @@ sub csv-string-to-dataset(Str $source, *%args) is export {
 
     # Types is not implemented yet
     if %args<types>:exists {
-        warn 'Text::CSV does not have an implementation of types setting yet.';
+        note 'Text::CSV does not have an implementation of types setting yet.';
         # $csv.types(|%args<types>)
     }
     my @tbl;
