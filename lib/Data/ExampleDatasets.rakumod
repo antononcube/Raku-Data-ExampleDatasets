@@ -12,8 +12,10 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
     my $csv = Text::CSV.new;
     my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
 
-    my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
-
+    # Instead of just calling the following line let us delegate to
+    # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
+    my $content = slurp $fileHandle;
+    my @tbl = csv-string-to-dataset($content);
     return @tbl;
 
     ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
@@ -180,6 +182,7 @@ sub csv-string-to-dataset(Str $source, *%args) is export {
         my @header = $csv.getline(@data[0]);
         @tbl = do for @data[1 .. *- 1] -> $row {
             # This is an MVP solution to automatic types.
+            # But it might just good enough, since at R datasets have columns with the same type.
             my @parsedRow = do if %args<auto-types> // True {
                 $csv.getline($row).List.map({ is-number-w-ws($_) ?? $_.Numeric !! $_ }).List
             } else {
