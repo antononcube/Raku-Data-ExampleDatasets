@@ -27,6 +27,6 @@ $packageItemToDOC = $packageItemToDOC.map({ $_.key => $_.value.first<Doc> });
 spurt "./AccessData.rakumod",
         'unit module Data::ExampleDatasets::AccessData;' ~ "\n\n" ~
                 'sub item-to-csv-url() is export {' ~ "\n" ~ $packageItemToCSV.Hash.raku ~ "\n" ~ '}' ~ "\n\n" ~
-                'sub item-to-dos-url() is export {' ~ "\n" ~ $packageItemToDOC.Hash.raku ~ "\n" ~ '}' ~ "\n";
+                'sub item-to-doc-url() is export {' ~ "\n" ~ $packageItemToDOC.Hash.raku ~ "\n" ~ '}' ~ "\n";
 
 
