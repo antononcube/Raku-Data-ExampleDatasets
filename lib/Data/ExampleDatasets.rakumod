@@ -168,7 +168,7 @@ sub is-number-wo-ws(Str $term --> Bool) {
 }
 
 #| Parses a specified CSV string into array-of-hashmaps or array-of-arrays.
-sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], *%args) is export {
+sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless = True, *%args) is export {
 
     my %args2 = %args;
     %args2<headers>:delete;
@@ -205,6 +205,11 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], *%args) is export 
                 $csv.getline($row).List;
             }
         }
+    }
+
+    # Drop empty first column
+    if $no-nameless {
+        @tbl = @tbl.map({ $_.grep({ .key ne '' }).hash }).Array
     }
 
     # Process NA's
