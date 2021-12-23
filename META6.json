@@ -1,7 +1,7 @@
 {
   "name": "Data::ExampleDatasets",
   "description": "Obtaining example datasets.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
@@ -25,7 +25,10 @@
   "license": "Artistic-2.0",
   "tags": [
     "data",
-    "dataset"
+    "dataset",
+    "example",
+    "metadata",
+    "Rdatasets"
   ],
   "api": "1",
   "source-url": "https://github.com/antononcube/Raku-Data-ExampleDatasets.git"
