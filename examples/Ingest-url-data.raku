@@ -22,5 +22,12 @@ say "Ingested metadata with {@dfMeta.elems} rows within {$endTime-$startTime} se
 
 # say to-pretty-table(@dfMeta);
 
-say to-pretty-table(import-csv-to-dataset('mtcars'));
+say to-pretty-table(example-dataset('mtcars'));
+
+say to-pretty-table(example-dataset('COUNT::smoking'));
+
+say example-dataset('iris');
+
+say to-pretty-table(example-dataset( / iris $ /)[^12]);
+
 
