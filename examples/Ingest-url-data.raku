@@ -6,7 +6,6 @@ use lib '.';
 use Data::ExampleDatasets;
 use Data::Reshapers;
 
-
 # Load a well known dataset (if the given name is unique.)
 say to-pretty-table(example-dataset('mtcars'));
 
@@ -28,3 +27,13 @@ my $endTime = now;
 say "Ingested metadata with {@dfMeta.elems} rows within {$endTime-$startTime} seconds";
 
 # say to-pretty-table(@dfMeta);
+
+
+# Ingest from URL
+$startTime = now;
+my @tbl2 = example-dataset('https://vincentarelbundock.github.io/Rdatasets/csv/DAAG/ACF1.csv');
+$endTime = now;
+say "Ingested URL data with {@tbl2.elems} rows within {$endTime-$startTime} seconds";
+
+say to-pretty-table(@tbl2);
+
