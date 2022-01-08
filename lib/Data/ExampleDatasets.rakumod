@@ -158,10 +158,12 @@ sub get-url-data(Str $url, UInt :$timeout= 10) is export {
 # Parse CSV string to dataset
 #============================================================
 # Take from https://rosettacode.org/wiki/Determine_if_a_string_is_numeric#Raku
-sub is-number-w-ws(Str $term --> Bool) {
+multi is-number-w-ws(Str $term --> Bool) {
     try { $term.Numeric };
     $! ?? False !! True
 }
+multi is-number-w-ws(Numeric $field --> Bool) { True }
+multi is-number-w-ws(| --> Bool) { False }
 
 sub is-number-wo-ws(Str $term --> Bool) {
     ?($term ~~ / \S /) && $term.Numeric !~~ Failure;
