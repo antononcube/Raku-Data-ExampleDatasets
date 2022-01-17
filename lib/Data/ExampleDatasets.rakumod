@@ -6,7 +6,8 @@ use Data::ExampleDatasets::AccessData;
 
 #===========================================================
 
-my @metadataDataset = Nil;
+# See the BEGIN block below.
+my @metadataDataset;
 
 #| Get the dataset. Returns Positional[Hash] or Positional[Array].
 our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is export {
@@ -221,3 +222,8 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless
 
     return @tbl;
 }
+
+#============================================================
+# Optimization
+#============================================================
+@metadataDataset := BEGIN { get-datasets-metadata(headers=>'auto') };
