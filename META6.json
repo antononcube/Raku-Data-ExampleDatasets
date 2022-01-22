@@ -16,8 +16,7 @@
   "build-depends": [],
   "test-depends": [],
   "provides": {
-    "Data::ExampleDatasets": "lib/Data/ExampleDatasets.rakumod",
-    "Data::ExampleDatasets::AccessData": "lib/Data/ExampleDatasets/AccessData.rakumod"
+    "Data::ExampleDatasets": "lib/Data/ExampleDatasets.rakumod"
   },
   "resources": [
     "dfRdatasets.csv"
