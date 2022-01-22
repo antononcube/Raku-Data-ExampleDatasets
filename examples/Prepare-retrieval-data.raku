@@ -1,5 +1,7 @@
 #!/usr/bin/env perl6
 
+# I made this file and corresponding workflow because I did not know about BEGIN.
+
 use lib './lib';
 use lib '.';
 
