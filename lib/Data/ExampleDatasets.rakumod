@@ -2,17 +2,47 @@ use HTTP::UserAgent;
 use Text::CSV;
 use URL::Find;
 use XDG::BaseDirectory :terms;
-use Data::ExampleDatasets::AccessData;
 
 #===========================================================
 
-# See the BEGIN block below.
+# See the BEGIN blocks below.
 my @metadataDataset;
+my %packageItemToCSV;
+my %packageItemToDOC;
 
-#| Get the dataset. Returns Positional[Hash] or Positional[Array].
-our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is export {
+#===========================================================
+#| Get item to CSV URL data mapping.
+sub get-item-to-csv-url(-->Hash) is export {
 
-    if @metadataDataset !eqv [Any,] {
+    if so %packageItemToCSV {
+        return %packageItemToCSV;
+    } else {
+        say get-datasets-metadata();
+        my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
+        %packageItemToCSV = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash;
+        say %packageItemToCSV;
+        return %packageItemToCSV;
+    }
+}
+
+#| Get item to DOC URL data mapping.
+sub get-item-to-doc-url(-->Hash) is export {
+
+    if so %packageItemToDOC {
+        return %packageItemToDOC;
+    } else {
+        my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
+        %packageItemToDOC = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash;
+        return %packageItemToDOC;
+    }
+}
+
+
+#===========================================================
+#| Get the dataset. Returns Array[Hash] or Array[Array].
+our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
+
+    if so @metadataDataset {
         return @metadataDataset
     } else {
 
@@ -42,7 +72,7 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Positional) is expor
 #============================================================
 
 #| Imports CSV files or URLs with CSV data.
-sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args) is export {
+sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args --> List) is export {
     if $sourceSpec ~~ Str and find-urls($sourceSpec) {
 
         # Get the URL content
@@ -67,7 +97,7 @@ sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args) is expo
 
         # Make a search index
         #my %items = @dfMeta.map({ $_<Item> }) Z=> ^@dfMeta.elems;
-        my %itemToURLs = item-to-csv-url();
+        my %itemToURLs = get-item-to-csv-url();
 
         # Retrieve if known or Whatever
         my %catRes;
@@ -171,7 +201,7 @@ sub is-number-wo-ws(Str $term --> Bool) {
 }
 
 #| Parses a specified CSV string into array-of-hashmaps or array-of-arrays.
-sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless = True, *%args) is export {
+sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless = True, *%args --> Array) is export {
 
     my %args2 = %args;
     %args2<headers>:delete;
@@ -217,7 +247,7 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless
 
     # Process NA's
     if @na-symbols.elems > 0 {
-        @tbl = @tbl.deepmap({ $_ (elem) @na-symbols ?? Nil !! $_});
+        @tbl = @tbl.deepmap({ $_ (elem) @na-symbols ?? Nil !! $_ });
     }
 
     return @tbl;
@@ -227,3 +257,13 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless
 # Optimization
 #============================================================
 @metadataDataset := BEGIN { get-datasets-metadata(headers=>'auto') };
+
+%packageItemToCSV := BEGIN {
+    my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
+    $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash
+}
+
+%packageItemToDOC := BEGIN {
+    my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
+    $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash
+}
