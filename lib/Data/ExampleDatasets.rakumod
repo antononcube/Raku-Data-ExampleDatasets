@@ -15,13 +15,13 @@ my %packageItemToDOC;
 sub get-item-to-csv-url(-->Hash) is export {
 
     if so %packageItemToCSV {
-        return %packageItemToCSV;
+        return %packageItemToCSV.deepmap(*.clone);
     } else {
         say get-datasets-metadata();
         my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
         %packageItemToCSV = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash;
         say %packageItemToCSV;
-        return %packageItemToCSV;
+        return %packageItemToCSV.deepmap(*.clone);
     }
 }
 
@@ -29,11 +29,11 @@ sub get-item-to-csv-url(-->Hash) is export {
 sub get-item-to-doc-url(-->Hash) is export {
 
     if so %packageItemToDOC {
-        return %packageItemToDOC;
+        return %packageItemToDOC.deepmap(*.clone);
     } else {
         my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
         %packageItemToDOC = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash;
-        return %packageItemToDOC;
+        return %packageItemToDOC.deepmap(*.clone);
     }
 }
 
@@ -43,7 +43,7 @@ sub get-item-to-doc-url(-->Hash) is export {
 our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
 
     if so @metadataDataset {
-        return @metadataDataset
+        return @metadataDataset.deepmap(*.clone)
     } else {
 
         my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
@@ -52,7 +52,7 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
         # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
         my $content = slurp $fileHandle;
         @metadataDataset = csv-string-to-dataset($content);
-        return @metadataDataset;
+        return @metadataDataset.deepmap(*.clone);
 
         ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
         ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
@@ -256,14 +256,14 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless
 #============================================================
 # Optimization
 #============================================================
-@metadataDataset := BEGIN { get-datasets-metadata(headers=>'auto') };
+@metadataDataset = BEGIN { get-datasets-metadata(headers=>'auto') };
 
-%packageItemToCSV := BEGIN {
+%packageItemToCSV = BEGIN {
     my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
     $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash
 }
 
-%packageItemToDOC := BEGIN {
+%packageItemToDOC = BEGIN {
     my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
     $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash
 }
