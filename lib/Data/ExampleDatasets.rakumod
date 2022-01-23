@@ -15,13 +15,11 @@ my %packageItemToDOC;
 sub get-item-to-csv-url(-->Hash) is export {
 
     if so %packageItemToCSV {
-        return %packageItemToCSV.deepmap(*.clone);
+        return %packageItemToCSV;
     } else {
-        say get-datasets-metadata();
         my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
         %packageItemToCSV = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash;
-        say %packageItemToCSV;
-        return %packageItemToCSV.deepmap(*.clone);
+        return %packageItemToCSV;
     }
 }
 
@@ -29,11 +27,11 @@ sub get-item-to-csv-url(-->Hash) is export {
 sub get-item-to-doc-url(-->Hash) is export {
 
     if so %packageItemToDOC {
-        return %packageItemToDOC.deepmap(*.clone);
+        return %packageItemToDOC;
     } else {
         my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
         %packageItemToDOC = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash;
-        return %packageItemToDOC.deepmap(*.clone);
+        return %packageItemToDOC;
     }
 }
 
@@ -43,7 +41,7 @@ sub get-item-to-doc-url(-->Hash) is export {
 our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
 
     if so @metadataDataset {
-        return @metadataDataset.deepmap(*.clone)
+        return @metadataDataset;
     } else {
 
         my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
@@ -52,7 +50,7 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
         # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
         my $content = slurp $fileHandle;
         @metadataDataset = csv-string-to-dataset($content);
-        return @metadataDataset.deepmap(*.clone);
+        return @metadataDataset;
 
         ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
         ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
