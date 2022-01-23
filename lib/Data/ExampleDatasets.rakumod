@@ -38,10 +38,10 @@ sub get-item-to-doc-url(-->Hash) is export {
 
 #===========================================================
 #| Get the dataset. Returns Array[Hash] or Array[Array].
-our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
+our sub get-datasets-metadata(Bool :$deepcopy = False --> Array) is export {
 
     if so @metadataDataset {
-        return @metadataDataset;
+        return $deepcopy ?? @metadataDataset.deepmap(*.clone) !! @metadataDataset;
     } else {
 
         my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
@@ -50,10 +50,11 @@ our sub get-datasets-metadata(Str:D :$headers = 'auto', --> Array) is export {
         # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
         my $content = slurp $fileHandle;
         @metadataDataset = csv-string-to-dataset($content);
-        return @metadataDataset;
+        return $deepcopy ?? @metadataDataset.deepmap(*.clone) !! @metadataDataset;
 
         ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
         ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
+        ## Note the this points are mute, since we optimize with BEGIN. (See end of file.)
         #my @colNames = ["Package", "Item", "Title", "Rows", "Cols", "n_binary", "n_character", "n_factor", "n_logical", "n_numeric", "CSV", "Doc"];
         #my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
         #my Str @metaRecords = $fileHandle.lines;
@@ -254,14 +255,8 @@ sub csv-string-to-dataset(Str $source, :@na-symbols = ['NA'], Bool :$no-nameless
 #============================================================
 # Optimization
 #============================================================
-@metadataDataset = BEGIN { get-datasets-metadata(headers=>'auto') };
+@metadataDataset = BEGIN { get-datasets-metadata() }
 
-%packageItemToCSV = BEGIN {
-    my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item CSV> }).Hash });
-    $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<CSV> }).Hash
-}
+%packageItemToCSV = BEGIN { get-item-to-csv-url() }
 
-%packageItemToDOC = BEGIN {
-    my $temp = @metadataDataset.map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
-    $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash
-}
+%packageItemToDOC = BEGIN { get-item-to-doc-url() }
