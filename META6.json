@@ -1,7 +1,7 @@
 {
   "name": "Data::ExampleDatasets",
   "description": "Obtaining example datasets.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
