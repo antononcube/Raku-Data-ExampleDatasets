@@ -29,8 +29,8 @@ sub get-item-to-doc-url(-->Hash) is export {
     if so %packageItemToDOC {
         return %packageItemToDOC;
     } else {
-        my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item DOC> }).Hash });
-        %packageItemToDOC = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<DOC> }).Hash;
+        my $temp = get-datasets-metadata().map({  $_.grep({ $_.key (elem) <Package Item Doc> }).Hash });
+        %packageItemToDOC = $temp.map({ $_<Package> ~ '::' ~ $_<Item> => $_<Doc> }).Hash;
         return %packageItemToDOC;
     }
 }
