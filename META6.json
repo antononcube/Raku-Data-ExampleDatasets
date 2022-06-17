@@ -1,12 +1,12 @@
 {
   "name": "Data::ExampleDatasets",
   "description": "Obtaining example datasets.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
   ],
-  "auth": "github:antononcube",
+  "auth": "zef:antononcube",
   "depends": [
     "HTTP::UserAgent",
     "Text::CSV",
