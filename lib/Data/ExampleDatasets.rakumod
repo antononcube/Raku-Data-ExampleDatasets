@@ -3,6 +3,8 @@ use Text::CSV;
 use URL::Find;
 use XDG::BaseDirectory :terms;
 
+unit module Data::ExampleDatasets;
+
 #===========================================================
 
 # See the BEGIN blocks below.
