@@ -1,5 +1,7 @@
 # Data::ExampleDatasets Raku package
 
+[![SparkyCI](http://sparrowhub.io:2222/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](http://sparrowhub.io:2222)
+
 Raku package for (obtaining) example datasets.
 
 Currently, this repository contains only [datasets metadata](./resources/dfRdatasets.csv).
