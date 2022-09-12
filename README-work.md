@@ -43,9 +43,9 @@ records-summary(@tbl)
 ```
 
 **Remark**:  The values for the first argument of `example-dataset` correspond to the values 
-of the columns “Item” and “Package”, respectively, in the
+of the columns "Item" and "Package", respectively, in theA
 [metadata dataset](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) 
-from the GitHub repository “Rdatasets”, [VAB1]. 
+from the GitHub repository "Rdatasets", [VAB1]. 
 See the datasets metadata sub-section below.
 
 The first argument of `example-dataset` can take as values:

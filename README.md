@@ -39,8 +39,16 @@ my @tbl = example-dataset('Baumann', :headers);
 say to-pretty-table(@tbl[^6]);
 ```
 ```
-#ERROR: If the first argument is an array then it is expected that it can be coerced into a array-of-hashes, array-of-positionals, or hash-of-hashes, which in turn can be coerced into a full two dimensional array.
-# Nil
+# +-----------+-----------+-------------+-------+-------------+-------------+
+# | pretest.1 | pretest.2 | post.test.2 | group | post.test.3 | post.test.1 |
+# +-----------+-----------+-------------+-------+-------------+-------------+
+# |     4     |     3     |      4      | Basal |      41     |      5      |
+# |     6     |     5     |      5      | Basal |      41     |      9      |
+# |     9     |     4     |      3      | Basal |      43     |      5      |
+# |     12    |     6     |      5      | Basal |      46     |      8      |
+# |     16    |     5     |      9      | Basal |      46     |      10     |
+# |     15    |     13    |      8      | Basal |      45     |      9      |
+# +-----------+-----------+-------------+-------+-------------+-------------+
 ```
 
 Here we summarize the dataset obtained above:
@@ -49,15 +57,22 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 ```
-#ERROR: No such method 'value' for invocant of type 'Array'.  Did you mean
-#ERROR: 'values'?
-# Nil
+# +--------------------+---------------------+-------------+--------------------+--------------------+--------------------+
+# | pretest.1          | post.test.3         | group       | post.test.1        | post.test.2        | pretest.2          |
+# +--------------------+---------------------+-------------+--------------------+--------------------+--------------------+
+# | Min    => 4        | Min    => 30        | Strat => 22 | Min    => 1        | Min    => 0        | Min    => 1        |
+# | 1st-Qu => 8        | 1st-Qu => 40        | DRTA  => 22 | 1st-Qu => 5        | 1st-Qu => 5        | 1st-Qu => 3        |
+# | Mean   => 9.787879 | Mean   => 44.015152 | Basal => 22 | Mean   => 8.075758 | Mean   => 6.712121 | Mean   => 5.106061 |
+# | Median => 9        | Median => 45        |             | Median => 8        | Median => 6        | Median => 5        |
+# | 3rd-Qu => 12       | 3rd-Qu => 49        |             | 3rd-Qu => 11       | 3rd-Qu => 8        | 3rd-Qu => 6        |
+# | Max    => 16       | Max    => 57        |             | Max    => 15       | Max    => 13       | Max    => 13       |
+# +--------------------+---------------------+-------------+--------------------+--------------------+--------------------+
 ```
 
 **Remark**:  The values for the first argument of `example-dataset` correspond to the values 
-of the columns “Item” and “Package”, respectively, in the
+of the columns "Item" and "Package", respectively, in theA
 [metadata dataset](https://vincentarelbundock.github.io/Rdatasets/articles/data.html) 
-from the GitHub repository “Rdatasets”, [VAB1]. 
+from the GitHub repository "Rdatasets", [VAB1]. 
 See the datasets metadata sub-section below.
 
 The first argument of `example-dataset` can take as values:
@@ -87,16 +102,16 @@ my @tbl2 = example-dataset($url, :headers);
 records-summary(@tbl2);
 ```
 ```
-# +-----------------+----------------+---------------------+-------------------+---------------+
-# | id              | passengerClass | passengerAge        | passengerSurvival | passengerSex  |
-# +-----------------+----------------+---------------------+-------------------+---------------+
-# | Min    => 1     | 3rd => 709     | Min    => -1        | died     => 809   | male   => 843 |
-# | 1st-Qu => 327.5 | 1st => 323     | 1st-Qu => 10        | survived => 500   | female => 466 |
-# | Mean   => 655   | 2nd => 277     | Mean   => 23.550038 |                   |               |
-# | Median => 655   |                | Median => 20        |                   |               |
-# | 3rd-Qu => 982.5 |                | 3rd-Qu => 40        |                   |               |
-# | Max    => 1309  |                | Max    => 80        |                   |               |
-# +-----------------+----------------+---------------------+-------------------+---------------+
+# +-------------------+-----------------+----------------+---------------------+---------------+
+# | passengerSurvival | id              | passengerClass | passengerAge        | passengerSex  |
+# +-------------------+-----------------+----------------+---------------------+---------------+
+# | died     => 809   | Min    => 1     | 3rd => 709     | Min    => -1        | male   => 843 |
+# | survived => 500   | 1st-Qu => 327.5 | 1st => 323     | 1st-Qu => 10        | female => 466 |
+# |                   | Mean   => 655   | 2nd => 277     | Mean   => 23.550038 |               |
+# |                   | Median => 655   |                | Median => 20        |               |
+# |                   | 3rd-Qu => 982.5 |                | 3rd-Qu => 40        |               |
+# |                   | Max    => 1309  |                | Max    => 80        |               |
+# +-------------------+-----------------+----------------+---------------------+---------------+
 ```
 
 ### Datasets metadata
@@ -113,16 +128,16 @@ my @tblMeta = get-datasets-metadata();
 say to-pretty-table(@tblMeta)
 ```
 ```
-# +------+------------+------+--------------------------------------------------------------------+
-# | Cols |    Item    | Rows |                               Title                                |
-# +------+------------+------+--------------------------------------------------------------------+
-# |  4   | Snow.pumps |  13  |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |
-# |  7   |    BCG     |  13  |                          BCG Vaccine Data                          |
-# |  5   |   cement   |  13  |                  Heat Evolved by Setting Cements                   |
-# |  2   |  kootenay  |  13  |   Waterflow Measurements of Kootenay River in Libby and Newgate    |
-# |  5   | Newhouse77 |  13  | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |
-# |  2   |   Saxony   |  13  |                         Families in Saxony                         |
-# +------+------------+------+--------------------------------------------------------------------+
+# +------------+--------------------------------------------------------------------+------+------+
+# |    Item    |                               Title                                | Rows | Cols |
+# +------------+--------------------------------------------------------------------+------+------+
+# | Snow.pumps |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |  13  |  4   |
+# |    BCG     |                          BCG Vaccine Data                          |  13  |  7   |
+# |   cement   |                  Heat Evolved by Setting Cements                   |  13  |  5   |
+# |  kootenay  |   Waterflow Measurements of Kootenay River in Libby and Newgate    |  13  |  2   |
+# | Newhouse77 | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |  13  |  5   |
+# |   Saxony   |                         Families in Saxony                         |  13  |  2   |
+# +------------+--------------------------------------------------------------------+------+------+
 ```
 
 ### Keeping downloaded data
@@ -142,7 +157,7 @@ my $endTime = now;
 say "Geting the data first time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data first time took 2.90335873 seconds
+# Geting the data first time took 1.183144061 seconds
 ```
 
 ```raku
@@ -152,7 +167,7 @@ $endTime = now;
 say "Geting the data second time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data second time took 1.559416817 seconds
+# Geting the data second time took 0.798274359 seconds
 ```
 
 ------
