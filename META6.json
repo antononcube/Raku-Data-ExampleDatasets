@@ -1,17 +1,17 @@
 {
   "name": "Data::ExampleDatasets",
   "description": "Obtaining example datasets.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
   ],
   "auth": "zef:antononcube",
   "depends": [
-    "HTTP::UserAgent",
-    "Text::CSV",
-    "URL::Find",
-    "XDG::BaseDirectory"
+    "HTTP::UserAgent:ver<1.1.51+>:auth<github:sergot>",
+    "Text::CSV:ver<0.010+>:auth<github:Tux>",
+    "URL::Find:ver<0.2.2+>:auth<github:samcv>",
+    "XDG::BaseDirectory:ver<0.0.13+>:auth<zef:jonathanstowe>:api<1.0+>"
   ],
   "build-depends": [],
   "test-depends": [],
