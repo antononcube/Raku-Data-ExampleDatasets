@@ -55,8 +55,8 @@ our sub get-datasets-metadata(Bool :$deepcopy = False --> Array) is export {
         return $deepcopy ?? @metadataDataset.deepmap(*.clone) !! @metadataDataset;
 
         ## It 7-10 faster to use this ad-hoc code than the standard Text::CSV workflow.
-        ## But to use the separator in CSV file has to be changed. (Some titles have commas in them.)
-        ## Note the this points are mute, since we optimize with BEGIN. (See end of file.)
+        ## But in order to use it the separator in the CSV file has to be changed. (Some titles have commas in them.)
+        ## Note that these points are mute, since we optimize with BEGIN. (See end of file.)
         #my @colNames = ["Package", "Item", "Title", "Rows", "Cols", "n_binary", "n_character", "n_factor", "n_logical", "n_numeric", "CSV", "Doc"];
         #my $fileHandle = %?RESOURCES<dfRDatasets.csv>;
         #my Str @metaRecords = $fileHandle.lines;
@@ -156,14 +156,14 @@ sub example-dataset($sourceSpec = Whatever, Bool :$keep = False, *%args --> List
             return csv-string-to-dataset($content, |%args)
         }
 
-        my $res = example-dataset($csvURL, |%args);
+        my @res = example-dataset($csvURL, |%args);
 
         if $keep {
             # Write to a CSV file in the resources directory
-            csv(in => $res, out => $fname, sep => ',');
+            csv(in => @res, out => $fname, sep => ',');
         }
 
-        return $res;
+        return @res;
 
     }
 }
