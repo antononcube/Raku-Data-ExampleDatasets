@@ -1,6 +1,6 @@
 # Data::ExampleDatasets Raku package
 
-[![SparkyCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
+[![SparrowCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
 
 Raku package for (obtaining) example datasets.
 
