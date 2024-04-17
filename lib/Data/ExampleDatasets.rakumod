@@ -46,11 +46,11 @@ our sub get-datasets-metadata(Bool :$deepcopy = False --> Array) is export {
         return $deepcopy ?? @metadataDataset.deepmap(*.clone) !! @metadataDataset;
     } else {
 
-        my $fileHandle = %?RESOURCES<dfRdatasets.csv>;
+        my $fileResource = %?RESOURCES<dfRdatasets.csv>;
 
         # Instead of just calling the following line let us delegate to
         # my @tbl = $csv.csv(in => $fileHandle.Str, :$headers);
-        my $content = slurp $fileHandle;
+        my $content = slurp $fileResource;
         @metadataDataset = csv-string-to-dataset($content);
         return $deepcopy ?? @metadataDataset.deepmap(*.clone) !! @metadataDataset;
 
