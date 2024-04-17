@@ -39,16 +39,16 @@ my @tbl = example-dataset('Baumann', :headers);
 say to-pretty-table(@tbl[^6]);
 ```
 ```
-# +-----------+-------------+----------+-------------+-------------+-----------+-------+
-# | pretest.2 | post.test.3 | rownames | post.test.2 | post.test.1 | pretest.1 | group |
-# +-----------+-------------+----------+-------------+-------------+-----------+-------+
-# |     3     |      41     |    1     |      4      |      5      |     4     | Basal |
-# |     5     |      41     |    2     |      5      |      9      |     6     | Basal |
-# |     4     |      43     |    3     |      3      |      5      |     9     | Basal |
-# |     6     |      46     |    4     |      5      |      8      |     12    | Basal |
-# |     5     |      46     |    5     |      9      |      10     |     16    | Basal |
-# |     13    |      45     |    6     |      8      |      9      |     15    | Basal |
-# +-----------+-------------+----------+-------------+-------------+-----------+-------+
+# +-----------+-------+-------------+-------------+-----------+----------+-------------+
+# | pretest.1 | group | post.test.3 | post.test.1 | pretest.2 | rownames | post.test.2 |
+# +-----------+-------+-------------+-------------+-----------+----------+-------------+
+# |     4     | Basal |      41     |      5      |     3     |    1     |      4      |
+# |     6     | Basal |      41     |      9      |     5     |    2     |      5      |
+# |     9     | Basal |      43     |      5      |     4     |    3     |      3      |
+# |     12    | Basal |      46     |      8      |     6     |    4     |      5      |
+# |     16    | Basal |      46     |      10     |     5     |    5     |      9      |
+# |     15    | Basal |      45     |      9      |     13    |    6     |      8      |
+# +-----------+-------+-------------+-------------+-----------+----------+-------------+
 ```
 
 Here we summarize the dataset obtained above:
@@ -57,16 +57,16 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 ```
-# +----------------+--------------------+-------------+--------------------+--------------------+---------------------+--------------------+
-# | rownames       | pretest.1          | group       | post.test.1        | pretest.2          | post.test.3         | post.test.2        |
-# +----------------+--------------------+-------------+--------------------+--------------------+---------------------+--------------------+
-# | Min    => 1    | Min    => 4        | Strat => 22 | Min    => 1        | Min    => 1        | Min    => 30        | Min    => 0        |
-# | 1st-Qu => 17   | 1st-Qu => 8        | DRTA  => 22 | 1st-Qu => 5        | 1st-Qu => 3        | 1st-Qu => 40        | 1st-Qu => 5        |
-# | Mean   => 33.5 | Mean   => 9.787879 | Basal => 22 | Mean   => 8.075758 | Mean   => 5.106061 | Mean   => 44.015152 | Mean   => 6.712121 |
-# | Median => 33.5 | Median => 9        |             | Median => 8        | Median => 5        | Median => 45        | Median => 6        |
-# | 3rd-Qu => 50   | 3rd-Qu => 12       |             | 3rd-Qu => 11       | 3rd-Qu => 6        | 3rd-Qu => 49        | 3rd-Qu => 8        |
-# | Max    => 66   | Max    => 16       |             | Max    => 15       | Max    => 13       | Max    => 57        | Max    => 13       |
-# +----------------+--------------------+-------------+--------------------+--------------------+---------------------+--------------------+
+# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
+# | post.test.3         | post.test.2        | group       | pretest.1          | post.test.1        | pretest.2          | rownames       |
+# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
+# | Min    => 30        | Min    => 0        | Strat => 22 | Min    => 4        | Min    => 1        | Min    => 1        | Min    => 1    |
+# | 1st-Qu => 40        | 1st-Qu => 5        | DRTA  => 22 | 1st-Qu => 8        | 1st-Qu => 5        | 1st-Qu => 3        | 1st-Qu => 17   |
+# | Mean   => 44.015152 | Mean   => 6.712121 | Basal => 22 | Mean   => 9.787879 | Mean   => 8.075758 | Mean   => 5.106061 | Mean   => 33.5 |
+# | Median => 45        | Median => 6        |             | Median => 9        | Median => 8        | Median => 5        | Median => 33.5 |
+# | 3rd-Qu => 49        | 3rd-Qu => 8        |             | 3rd-Qu => 12       | 3rd-Qu => 11       | 3rd-Qu => 6        | 3rd-Qu => 50   |
+# | Max    => 57        | Max    => 13       |             | Max    => 16       | Max    => 15       | Max    => 13       | Max    => 66   |
+# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
 ```
 
 **Remark**:  The values for the first argument of `example-dataset` correspond to the values 
@@ -99,19 +99,19 @@ Here we get a dataset by using an URL and display a summary of the obtained data
 ```perl6
 my $url = 'https://raw.githubusercontent.com/antononcube/Raku-Data-Reshapers/main/resources/dfTitanic.csv';
 my @tbl2 = example-dataset($url, :headers);
-records-summary(@tbl2);
+records-summary(@tbl2, field-names => <id passengerSex passengerClass passengerAge passengerSurvival>);
 ```
 ```
-# +----------------+---------------------+---------------+-----------------+-------------------+
-# | passengerClass | passengerAge        | passengerSex  | id              | passengerSurvival |
-# +----------------+---------------------+---------------+-----------------+-------------------+
-# | 3rd => 709     | Min    => -1        | male   => 843 | Min    => 1     | died     => 809   |
-# | 1st => 323     | 1st-Qu => 10        | female => 466 | 1st-Qu => 327.5 | survived => 500   |
-# | 2nd => 277     | Mean   => 23.550038 |               | Mean   => 655   |                   |
-# |                | Median => 20        |               | Median => 655   |                   |
-# |                | 3rd-Qu => 40        |               | 3rd-Qu => 982.5 |                   |
-# |                | Max    => 80        |               | Max    => 1309  |                   |
-# +----------------+---------------------+---------------+-----------------+-------------------+
+# +-----------------+---------------+----------------+---------------------+-------------------+
+# | id              | passengerSex  | passengerClass | passengerAge        | passengerSurvival |
+# +-----------------+---------------+----------------+---------------------+-------------------+
+# | Min    => 1     | male   => 843 | 3rd => 709     | Min    => -1        | died     => 809   |
+# | 1st-Qu => 327.5 | female => 466 | 1st => 323     | 1st-Qu => 10        | survived => 500   |
+# | Mean   => 655   |               | 2nd => 277     | Mean   => 23.550038 |                   |
+# | Median => 655   |               |                | Median => 20        |                   |
+# | 3rd-Qu => 982.5 |               |                | 3rd-Qu => 40        |                   |
+# | Max    => 1309  |               |                | Max    => 80        |                   |
+# +-----------------+---------------+----------------+---------------------+-------------------+
 ```
 
 ### Datasets metadata
@@ -125,19 +125,19 @@ Here we:
 ```perl6
 my @tblMeta = get-datasets-metadata();
 @tblMeta = @tblMeta.grep({ $_<Rows> == 13}).map({ $_.grep({ $_.key (elem) <Item Title Rows Cols>}).Hash });
-say to-pretty-table(@tblMeta)
+say to-pretty-table(@tblMeta, field-names => <Item Title Rows Cols>)
 ```
 ```
-# +------+------+------------+--------------------------------------------------------------------+
-# | Rows | Cols |    Item    |                               Title                                |
-# +------+------+------------+--------------------------------------------------------------------+
-# |  13  |  4   | Snow.pumps |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |
-# |  13  |  7   |    BCG     |                          BCG Vaccine Data                          |
-# |  13  |  5   |   cement   |                  Heat Evolved by Setting Cements                   |
-# |  13  |  2   |  kootenay  |   Waterflow Measurements of Kootenay River in Libby and Newgate    |
-# |  13  |  5   | Newhouse77 | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |
-# |  13  |  2   |   Saxony   |                         Families in Saxony                         |
-# +------+------+------------+--------------------------------------------------------------------+
+# +------------+--------------------------------------------------------------------+------+------+
+# |    Item    |                               Title                                | Rows | Cols |
+# +------------+--------------------------------------------------------------------+------+------+
+# | Snow.pumps |    John Snow's Map and Data on the 1854 London Cholera Outbreak    |  13  |  4   |
+# |    BCG     |                          BCG Vaccine Data                          |  13  |  7   |
+# |   cement   |                  Heat Evolved by Setting Cements                   |  13  |  5   |
+# |  kootenay  |   Waterflow Measurements of Kootenay River in Libby and Newgate    |  13  |  2   |
+# | Newhouse77 | Medical-Care Expenditure: A Cross-National Survey (Newhouse, 1977) |  13  |  5   |
+# |   Saxony   |                         Families in Saxony                         |  13  |  2   |
+# +------------+--------------------------------------------------------------------+------+------+
 ```
 
 ### Keeping downloaded data
@@ -157,7 +157,7 @@ my $endTime = now;
 say "Geting the data first time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data first time took 0.693845313 seconds
+# Geting the data first time took 1.276442999 seconds
 ```
 
 ```raku
@@ -167,7 +167,7 @@ $endTime = now;
 say "Geting the data second time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data second time took 0.711934937 seconds
+# Geting the data second time took 0.740454921 seconds
 ```
 
 ------

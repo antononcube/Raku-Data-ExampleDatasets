@@ -72,7 +72,7 @@ Here we get a dataset by using an URL and display a summary of the obtained data
 ```perl6
 my $url = 'https://raw.githubusercontent.com/antononcube/Raku-Data-Reshapers/main/resources/dfTitanic.csv';
 my @tbl2 = example-dataset($url, :headers);
-records-summary(@tbl2);
+records-summary(@tbl2, field-names => <id passengerSex passengerClass passengerAge passengerSurvival>);
 ```
 
 ### Datasets metadata
@@ -86,7 +86,7 @@ Here we:
 ```perl6
 my @tblMeta = get-datasets-metadata();
 @tblMeta = @tblMeta.grep({ $_<Rows> == 13}).map({ $_.grep({ $_.key (elem) <Item Title Rows Cols>}).Hash });
-say to-pretty-table(@tblMeta)
+say to-pretty-table(@tblMeta, field-names => <Item Title Rows Cols>)
 ```
 
 ### Keeping downloaded data
