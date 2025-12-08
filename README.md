@@ -1,5 +1,13 @@
 # Data::ExampleDatasets Raku package
 
+[![Actions Status](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions/workflows/linux.yml/badge.svg)](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions)
+[![Actions Status](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions/workflows/macos.yml/badge.svg)](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions)
+[![Actions Status](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions/workflows/windows.yml/badge.svg)](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions)
+[![SparkyCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
+
+[![](https://raku.land/zef:antononcube/Math::SparseMatrix/badges/version)](https://raku.land/zef:antononcube/Data::ExampleDatasets)
+[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+
 [![SparrowCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
 
 Raku package for (obtaining) example datasets.
@@ -39,16 +47,16 @@ my @tbl = example-dataset('Baumann', :headers);
 say to-pretty-table(@tbl[^6]);
 ```
 ```
-# +-----------+-------+-------------+-------------+-----------+----------+-------------+
-# | pretest.1 | group | post.test.3 | post.test.1 | pretest.2 | rownames | post.test.2 |
-# +-----------+-------+-------------+-------------+-----------+----------+-------------+
-# |     4     | Basal |      41     |      5      |     3     |    1     |      4      |
-# |     6     | Basal |      41     |      9      |     5     |    2     |      5      |
-# |     9     | Basal |      43     |      5      |     4     |    3     |      3      |
-# |     12    | Basal |      46     |      8      |     6     |    4     |      5      |
-# |     16    | Basal |      46     |      10     |     5     |    5     |      9      |
-# |     15    | Basal |      45     |      9      |     13    |    6     |      8      |
-# +-----------+-------+-------------+-------------+-----------+----------+-------------+
+# +-------+-------------+-----------+-------------+----------+-----------+-------------+
+# | group | post.test.2 | pretest.1 | post.test.3 | rownames | pretest.2 | post.test.1 |
+# +-------+-------------+-----------+-------------+----------+-----------+-------------+
+# | Basal |      4      |     4     |      41     |    1     |     3     |      5      |
+# | Basal |      5      |     6     |      41     |    2     |     5     |      9      |
+# | Basal |      3      |     9     |      43     |    3     |     4     |      5      |
+# | Basal |      5      |     12    |      46     |    4     |     6     |      8      |
+# | Basal |      9      |     16    |      46     |    5     |     5     |      10     |
+# | Basal |      8      |     15    |      45     |    6     |     13    |      9      |
+# +-------+-------------+-----------+-------------+----------+-----------+-------------+
 ```
 
 Here we summarize the dataset obtained above:
@@ -57,16 +65,16 @@ Here we summarize the dataset obtained above:
 records-summary(@tbl)
 ```
 ```
-# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
-# | post.test.3         | post.test.2        | group       | pretest.1          | post.test.1        | pretest.2          | rownames       |
-# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
-# | Min    => 30        | Min    => 0        | Strat => 22 | Min    => 4        | Min    => 1        | Min    => 1        | Min    => 1    |
-# | 1st-Qu => 40        | 1st-Qu => 5        | DRTA  => 22 | 1st-Qu => 8        | 1st-Qu => 5        | 1st-Qu => 3        | 1st-Qu => 17   |
-# | Mean   => 44.015152 | Mean   => 6.712121 | Basal => 22 | Mean   => 9.787879 | Mean   => 8.075758 | Mean   => 5.106061 | Mean   => 33.5 |
-# | Median => 45        | Median => 6        |             | Median => 9        | Median => 8        | Median => 5        | Median => 33.5 |
-# | 3rd-Qu => 49        | 3rd-Qu => 8        |             | 3rd-Qu => 12       | 3rd-Qu => 11       | 3rd-Qu => 6        | 3rd-Qu => 50   |
-# | Max    => 57        | Max    => 13       |             | Max    => 16       | Max    => 15       | Max    => 13       | Max    => 66   |
-# +---------------------+--------------------+-------------+--------------------+--------------------+--------------------+----------------+
+# +-------------+--------------------+--------------------+----------------+--------------------+--------------------+---------------------+
+# | group       | pretest.1          | post.test.1        | rownames       | pretest.2          | post.test.2        | post.test.3         |
+# +-------------+--------------------+--------------------+----------------+--------------------+--------------------+---------------------+
+# | Basal => 22 | Min    => 4        | Min    => 1        | Min    => 1    | Min    => 1        | Min    => 0        | Min    => 30        |
+# | Strat => 22 | 1st-Qu => 8        | 1st-Qu => 5        | 1st-Qu => 17   | 1st-Qu => 3        | 1st-Qu => 5        | 1st-Qu => 40        |
+# | DRTA  => 22 | Mean   => 9.787879 | Mean   => 8.075758 | Mean   => 33.5 | Mean   => 5.106061 | Mean   => 6.712121 | Mean   => 44.015152 |
+# |             | Median => 9        | Median => 8        | Median => 33.5 | Median => 5        | Median => 6        | Median => 45        |
+# |             | 3rd-Qu => 12       | 3rd-Qu => 11       | 3rd-Qu => 50   | 3rd-Qu => 6        | 3rd-Qu => 8        | 3rd-Qu => 49        |
+# |             | Max    => 16       | Max    => 15       | Max    => 66   | Max    => 13       | Max    => 13       | Max    => 57        |
+# +-------------+--------------------+--------------------+----------------+--------------------+--------------------+---------------------+
 ```
 
 **Remark**:  The values for the first argument of `example-dataset` correspond to the values 
@@ -157,7 +165,7 @@ my $endTime = now;
 say "Geting the data first time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data first time took 1.276442999 seconds
+# Geting the data first time took 0.76011044 seconds
 ```
 
 ```raku
@@ -167,7 +175,7 @@ $endTime = now;
 say "Geting the data second time took { $endTime - $startTime } seconds";
 ```
 ```
-# Geting the data second time took 0.740454921 seconds
+# Geting the data second time took 0.764633055 seconds
 ```
 
 ------
