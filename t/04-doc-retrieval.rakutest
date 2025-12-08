@@ -1,8 +1,6 @@
 use Test;
 
-use lib './lib';
-use lib '.';
-
+# use lib <. lib>;
 use Data::ExampleDatasets;
 
 plan 3;
