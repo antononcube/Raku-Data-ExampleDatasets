@@ -5,7 +5,7 @@
 [![Actions Status](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions/workflows/windows.yml/badge.svg)](https://github.com/antononcube/Raku-Data-ExampleDatasets/actions)
 [![SparkyCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
 
-[![](https://raku.land/zef:antononcube/Math::SparseMatrix/badges/version)](https://raku.land/zef:antononcube/Data::ExampleDatasets)
+[![](https://raku.land/zef:antononcube/Data::ExampleDatasets/badges/version)](https://raku.land/zef:antononcube/Data::ExampleDatasets)
 [![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 
 [![SparrowCI](https://ci.sparrowhub.io/project/gh-antononcube-Raku-Data-ExampleDatasets/badge)](https://ci.sparrowhub.io)
